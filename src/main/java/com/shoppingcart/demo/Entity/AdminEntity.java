@@ -5,9 +5,10 @@ import com.shoppingcart.demo.Enum.UserGender;
 import com.shoppingcart.demo.Enum.UserStatus;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class AdminEntity {
+public class AdminEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long adminId;
@@ -31,5 +32,16 @@ public class AdminEntity {
     @Column(nullable = false)
     private String password;
 
-
+    public AdminEntity(long adminId, String firstName, String lastName, String email, UserGender gender, String photoPath, String username, Date birthday, UserStatus status, String password) {
+        this.adminId = adminId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.photoPath = photoPath;
+        this.username = username;
+        this.birthday = birthday;
+        this.status = status;
+        this.password = password;
+    }
 }
