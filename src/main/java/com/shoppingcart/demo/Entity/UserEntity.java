@@ -2,12 +2,9 @@ package com.shoppingcart.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shoppingcart.demo.Enum.UserGender;
-import com.shoppingcart.demo.Enum.status;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "tbl_users", uniqueConstraints = {
@@ -22,7 +19,7 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "user_id")
+    @Column(name = "user_id")
     private long id;
 
     @Column(length = 500)
@@ -53,17 +50,15 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<OderEntity> userOrders = new ArrayList<>();
+
 
     public UserEntity() {
 
     }
 
-    public UserEntity(String name, String username, String email, String password) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
+
 
     public long getId() {
         return id;
@@ -175,7 +170,7 @@ public class UserEntity {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        com.shoppingcart.demo.Entity.UserEntity other = (com.shoppingcart.demo.Entity.UserEntity) obj;
+        UserEntity other = (UserEntity) obj;
         if (id != other.id)
             return false;
         return true;
