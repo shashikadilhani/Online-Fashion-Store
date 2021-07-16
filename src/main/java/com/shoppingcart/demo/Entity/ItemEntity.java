@@ -14,6 +14,7 @@ public class ItemEntity {
     private long item_id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name ="tbl_item_category")
     private ItemType type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,10 +25,27 @@ public class ItemEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date manuDate;
 
-
     private float price;
 
+    //remaining stock
+    private float item_stock;
+
+    @OneToOne
+    @JoinColumn(name = "order_item_id", unique = true)
+    private OrderItemCountEntity orderItemCountEntity;
+
+
     public ItemEntity() {
+    }
+
+    public ItemEntity(long item_id, ItemType type, Date expiryDate, Date manuDate, float price, float item_stock, OrderItemCountEntity orderItemCountEntity) {
+        this.item_id = item_id;
+        this.type = type;
+        this.expiryDate = expiryDate;
+        this.manuDate = manuDate;
+        this.price = price;
+        this.item_stock = item_stock;
+        this.orderItemCountEntity = orderItemCountEntity;
     }
 
     public long getItem_id() {
@@ -68,5 +86,13 @@ public class ItemEntity {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public float getItem_stock() {
+        return item_stock;
+    }
+
+    public void setItem_stock(float item_stock) {
+        this.item_stock = item_stock;
     }
 }

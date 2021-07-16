@@ -50,15 +50,20 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<OderEntity> userOrders = new ArrayList<>();
+//    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    private List<OderEntity> userOrders = new ArrayList<>();
 
 
     public UserEntity() {
 
     }
 
-
+    public UserEntity(String name, String email, String username, String password) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
     public long getId() {
         return id;

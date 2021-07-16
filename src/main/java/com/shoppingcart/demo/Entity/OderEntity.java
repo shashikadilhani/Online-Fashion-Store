@@ -16,20 +16,44 @@ public class OderEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderedDate;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "tbl_order_items",
-            joinColumns = @JoinColumn(name = "item_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private Set<ItemEntity> orderItems = new HashSet<>();
+    @OneToMany(mappedBy = "oderEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<OrderItemCountEntity> orderItemCountEntities = new ArrayList<>();
 
-    private int item_type_count;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private UserEntity customer;
 
     private float totalPrice;
 
+    public OderEntity() {
+    }
+
+    public OderEntity(long order_id, Date orderedDate, List<OrderItemCountEntity> orderItemCountEntities, float totalPrice) {
+        this.order_id = order_id;
+        this.orderedDate = orderedDate;
+        this.orderItemCountEntities = orderItemCountEntities;
+        this.totalPrice = totalPrice;
+    }
+
+    public long getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(long order_id) {
+        this.order_id = order_id;
+    }
+
+    public Date getOrderedDate() {
+        return orderedDate;
+    }
+
+    public void setOrderedDate(Date orderedDate) {
+        this.orderedDate = orderedDate;
+    }
 
 
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 }
