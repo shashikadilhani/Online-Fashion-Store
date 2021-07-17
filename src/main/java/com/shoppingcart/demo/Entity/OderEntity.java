@@ -19,6 +19,9 @@ public class OderEntity {
     @OneToMany(mappedBy = "oderEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<OrderItemCountEntity> orderItemCountEntities = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity userEntity;
 
     private float totalPrice;
 

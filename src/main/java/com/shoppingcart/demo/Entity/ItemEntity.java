@@ -13,6 +13,8 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long item_id;
 
+    private String itemname;
+
     @Enumerated(EnumType.STRING)
     @Column(name ="tbl_item_category")
     private ItemType type;
@@ -38,8 +40,9 @@ public class ItemEntity {
     public ItemEntity() {
     }
 
-    public ItemEntity(long item_id, ItemType type, Date expiryDate, Date manuDate, float price, float item_stock, OrderItemCountEntity orderItemCountEntity) {
+    public ItemEntity(long item_id, String itemname, ItemType type, Date expiryDate, Date manuDate, float price, float item_stock, OrderItemCountEntity orderItemCountEntity) {
         this.item_id = item_id;
+        this.itemname = itemname;
         this.type = type;
         this.expiryDate = expiryDate;
         this.manuDate = manuDate;
@@ -94,5 +97,21 @@ public class ItemEntity {
 
     public void setItem_stock(float item_stock) {
         this.item_stock = item_stock;
+    }
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
+
+    public OrderItemCountEntity getOrderItemCountEntity() {
+        return orderItemCountEntity;
+    }
+
+    public void setOrderItemCountEntity(OrderItemCountEntity orderItemCountEntity) {
+        this.orderItemCountEntity = orderItemCountEntity;
     }
 }
