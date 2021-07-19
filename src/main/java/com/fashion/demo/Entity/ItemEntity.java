@@ -27,41 +27,51 @@ public class ItemEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name ="stock")
-    private StockStatus stock;
+    private StockStatus stock_type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date addedDate;
 
     private float price;
-    private float item_stock;
+    private int item_stock;
 
     @OneToOne
     @JoinColumn(name = "order_item_id", unique = true)
     private OrderItemCountEntity orderItemCountEntity;
 
+    private String image;
 
     public ItemEntity() {
     }
 
-    public ItemEntity(long item_id, String item_name, ItemType category, SizeType size, StockStatus stock, Date addedDate, float price, float item_stock, OrderItemCountEntity orderItemCountEntity) {
+    public ItemEntity(long item_id, String item_name, ItemType category, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
         this.item_id = item_id;
         this.item_name = item_name;
         this.category = category;
         this.size = size;
-        this.stock = stock;
+        this.stock_type = stock_type;
         this.addedDate = addedDate;
         this.price = price;
         this.item_stock = item_stock;
         this.orderItemCountEntity = orderItemCountEntity;
+        this.image = image;
     }
 
-    public StockStatus getStock() {
-        return stock;
+    public String getImage() {
+        return image;
     }
 
-    public void setStock(StockStatus stock) {
-        this.stock = stock;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public StockStatus getStock_type() {
+        return stock_type;
+    }
+
+    public void setStock_type(StockStatus stock_type) {
+        this.stock_type = stock_type;
     }
 
     public SizeType getSize() {
@@ -108,7 +118,7 @@ public class ItemEntity {
         return item_stock;
     }
 
-    public void setItem_stock(float item_stock) {
+    public void setItem_stock(int item_stock) {
         this.item_stock = item_stock;
     }
 

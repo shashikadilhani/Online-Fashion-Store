@@ -9,16 +9,36 @@ public class AddItemsReqDTO {
     private ItemType category;
     private SizeType size;
     private float price;
+    private String image;
+    private int item_stock;
 
     public AddItemsReqDTO() {
     }
 
-    public AddItemsReqDTO(long item_id, String item_name, ItemType category, SizeType size, float price) {
+    public AddItemsReqDTO(long item_id, int item_stock, String image, String item_name, ItemType category, SizeType size, float price) {
         this.item_id = item_id;
+        this.item_stock = item_stock;
         this.item_name = item_name;
         this.category = category;
         this.size = size;
         this.price = price;
+        this.image = image;
+    }
+
+    public int getItem_stock() {
+        return item_stock;
+    }
+
+    public void setItem_stock(int item_stock) {
+        this.item_stock = item_stock;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public long getItem_id() {
@@ -69,6 +89,8 @@ public class AddItemsReqDTO {
                 ", category=" + category +
                 ", size=" + size +
                 ", price=" + price +
+                ", image='" + image + '\'' +
+                ", item_stock=" + item_stock +
                 '}';
     }
 }
