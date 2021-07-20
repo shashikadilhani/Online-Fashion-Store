@@ -1,6 +1,10 @@
 package com.fashion.demo.service.Impl;
 
+import com.fashion.demo.Entity.ItemEntity;
 import com.fashion.demo.Entity.UserEntity;
+import com.fashion.demo.Enum.StockStatus;
+import com.fashion.demo.dto.user.UserDTO;
+import com.fashion.demo.dto.user.UserListDTO;
 import com.fashion.demo.service.UserService;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.UserRepository;
@@ -14,6 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
 import static com.fashion.demo.constant.ApplicationConstant.RESOURCE_NOT_FOUND;
 
 @Service(value = "userService")
@@ -48,5 +57,34 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         );
 
         return UserPrincipal.create(user);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        LOGGER.info("Execute method getAllUsers ");
+        try {
+            List<UserEntity> userEntityList = userRepository.findAll();
+            if(!userEntityList.isEmpty()){
+                UserListDTO userListDTO = new UserListDTO();
+                List<UserDTO> userDTOS = new ArrayList<>();
+
+                for(UserEntity s: userEntityList){
+                    UserDTO userDTO = new UserDTO();
+                    userDTO.setName(s.getName());
+                    userDTO.setEmail(s.getEmail());
+                    userDTO.setId(s.getId());
+                    userDTOS.add(userDTO);
+                }
+                userListDTO.setUsers(userDTOS);
+
+                return userDTOS;
+
+            } else{
+                throw new ServiceException (INPUT_NOT_FOUND,"Input Not Found");
+            }
+        }catch (Exception e) {
+            LOGGER.error("getAllUsers : " + e.getMessage(), e);
+            throw e;
+        }
     }
 }
