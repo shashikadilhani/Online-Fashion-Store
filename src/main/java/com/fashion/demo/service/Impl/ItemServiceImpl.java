@@ -1,20 +1,22 @@
 package com.fashion.demo.service.Impl;
 
 import com.fashion.demo.Entity.ItemEntity;
+import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.StockStatus;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.ItemRepository;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
+import com.fashion.demo.dto.item.ItemDTO;
 import com.fashion.demo.service.ItemService;
-import com.sun.deploy.association.utility.AppConstants;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.omg.CORBA.OBJECT_NOT_EXIST;
+import org.hibernate.boot.model.naming.ImplicitEntityNameSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
 
@@ -57,6 +59,18 @@ public class ItemServiceImpl implements ItemService {
             }
         }catch (Exception e) {
             LOGGER.error("addItem : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ItemDTO> viewItemsByCategory(ItemCategory category) {
+        LOGGER.info("Execute items by category");
+        try {
+            List<ItemEntity> itemEntities = itemRepository.findByCategory(category);
+
+        }catch (Exception e) {
+            LOGGER.error("viewItemsByCategory : " + e.getMessage(), e);
             throw e;
         }
     }

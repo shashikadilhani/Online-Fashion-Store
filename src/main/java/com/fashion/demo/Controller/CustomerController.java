@@ -32,12 +32,4 @@ public class CustomerController {
 //        return new ResponseEntity(new CategoryListResponseDTO(true, category), HttpStatus.OK);
         return null;
     }
-
-    @GetMapping(value = "/viewAll",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity viewAll() {
-
-        List<UserDTO> userListDTO =  userService.getAllUsers();
-        return new ResponseEntity((userListDTO), HttpStatus.OK);
-    }
-
 }

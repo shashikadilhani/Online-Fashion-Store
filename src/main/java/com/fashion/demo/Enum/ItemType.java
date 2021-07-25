@@ -1,5 +1,5 @@
 package com.fashion.demo.Enum;
 
 public enum ItemType {
-    CHILDREN, WOMEN, MEN
+    TROUSER, SAREE, GAWON,SKIRT, BLOUSE, SHIRT, TSHIRT, DENIM, SARONG
 }

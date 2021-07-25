@@ -1,5 +1,6 @@
 package com.fashion.demo.Entity;
 
+import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.Enum.SizeType;
 import com.fashion.demo.Enum.StockStatus;
@@ -19,7 +20,11 @@ public class ItemEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name ="item_category")
-    private ItemType category;
+    private ItemCategory category;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name ="item_type")
+    private ItemType type;
 
     @Enumerated(EnumType.STRING)
     @Column(name ="size")
@@ -45,7 +50,7 @@ public class ItemEntity {
     public ItemEntity() {
     }
 
-    public ItemEntity(long item_id, String item_name, ItemType category, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
+    public ItemEntity(long item_id, String item_name, ItemCategory category, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
         this.item_id = item_id;
         this.item_name = item_name;
         this.category = category;
@@ -98,12 +103,20 @@ public class ItemEntity {
         this.item_id = item_id;
     }
 
-    public ItemType getCategory() {
+    public ItemCategory getCategory() {
         return category;
     }
 
-    public void setCategory(ItemType category) {
+    public void setCategory(ItemCategory category) {
         this.category = category;
+    }
+
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
     }
 
     public float getPrice() {
