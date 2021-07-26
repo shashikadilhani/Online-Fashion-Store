@@ -21,10 +21,10 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping(value = "/view/{category}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity viewItemsByCategory(@PathVariable ItemCategory category) {
+    @GetMapping(value = "/view/category" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewItemsByCategory(@RequestParam String cate) {
 
-        List<ItemDTO> itemDTOS =  itemService.viewItemsByCategory(category);
+        List<ItemDTO> itemDTOS =  itemService.viewItemsByCategory(cate);
         return new ResponseEntity((itemDTOS), HttpStatus.OK);
     }
 }

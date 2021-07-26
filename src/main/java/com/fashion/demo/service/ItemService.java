@@ -9,5 +9,5 @@ import java.util.List;
 public interface ItemService {
     void addItem(AddItemsReqDTO addItemsReqDTO);
 
-    List<ItemDTO> viewItemsByCategory(ItemCategory category);
+    List<ItemDTO> viewItemsByCategory(String category);
 }

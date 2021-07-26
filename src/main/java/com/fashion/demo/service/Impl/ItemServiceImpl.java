@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,10 +65,30 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> viewItemsByCategory(ItemCategory category) {
+    public List<ItemDTO> viewItemsByCategory(String category) {
         LOGGER.info("Execute items by category");
         try {
+            List<ItemDTO> itemDTOS = new ArrayList<>();
             List<ItemEntity> itemEntities = itemRepository.findByCategory(category);
+
+            if(itemEntities.isEmpty()){
+                 return itemDTOS;
+            }
+            else{
+                for(ItemEntity i : itemEntities ){
+                    ItemDTO itemDTO = new ItemDTO();
+                    itemDTO.setCategory(i.getCategory());
+                    itemDTO.setId(i.getItem_id());
+                    itemDTO.setImage(i.getImage());
+                    itemDTO.setItem_name(i.getItem_name());
+                    itemDTO.setPrice(i.getPrice());
+                    itemDTO.setSize(i.getSize());
+                    itemDTO.setType(i.getType());
+
+                    itemDTOS.add(itemDTO);
+                }
+                return itemDTOS;
+            }
 
         }catch (Exception e) {
             LOGGER.error("viewItemsByCategory : " + e.getMessage(), e);
