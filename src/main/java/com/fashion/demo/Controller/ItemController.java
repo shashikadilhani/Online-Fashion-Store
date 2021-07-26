@@ -1,6 +1,7 @@
 package com.fashion.demo.Controller;
 
 import com.fashion.demo.Enum.ItemCategory;
+import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.dto.item.ItemDTO;
 import com.fashion.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,19 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping(value = "/view/category" ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity viewItemsByCategory(@RequestParam String cate) {
+    //get distinct item types based on category
+    @GetMapping(value = "/view/catogery" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewItemTypesByCategory(@RequestParam String cate) {
 
-        List<ItemDTO> itemDTOS =  itemService.viewItemsByCategory(cate);
-        return new ResponseEntity((itemDTOS), HttpStatus.OK);
+        List<ItemType> itemTypes =  itemService.viewItemTypesByCategory(cate);
+        return new ResponseEntity((itemTypes), HttpStatus.OK);
     }
+
+    //get all items by item type
+//    @GetMapping(value = "/view/category/types" ,produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity viewItemsByTypeandCategory(@RequestParam String cate) {
+//
+//        List<ItemDTO> itemDTOS =  itemService.viewItemsByCategory(cate);
+//        return new ResponseEntity((itemDTOS), HttpStatus.OK);
+//    }
 }

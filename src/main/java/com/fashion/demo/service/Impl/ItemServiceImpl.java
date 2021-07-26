@@ -2,6 +2,7 @@ package com.fashion.demo.service.Impl;
 
 import com.fashion.demo.Entity.ItemEntity;
 import com.fashion.demo.Enum.ItemCategory;
+import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.Enum.StockStatus;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.ItemRepository;
@@ -65,30 +66,34 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> viewItemsByCategory(String category) {
+    public List<ItemType> viewItemTypesByCategory(String category) {
         LOGGER.info("Execute items by category");
         try {
-            List<ItemDTO> itemDTOS = new ArrayList<>();
-            List<ItemEntity> itemEntities = itemRepository.findByCategory(category);
+//            List<ItemDTO> itemDTOS = new ArrayList<>();
+            List<ItemType> itemTypes = new ArrayList<>();
+            List<ItemType> itemEntities = itemRepository.findItemTypesByCategory(category);
 
-            if(itemEntities.isEmpty()){
-                 return itemDTOS;
-            }
-            else{
-                for(ItemEntity i : itemEntities ){
-                    ItemDTO itemDTO = new ItemDTO();
-                    itemDTO.setCategory(i.getCategory());
-                    itemDTO.setId(i.getItem_id());
-                    itemDTO.setImage(i.getImage());
-                    itemDTO.setItem_name(i.getItem_name());
-                    itemDTO.setPrice(i.getPrice());
-                    itemDTO.setSize(i.getSize());
-                    itemDTO.setType(i.getType());
 
-                    itemDTOS.add(itemDTO);
-                }
-                return itemDTOS;
-            }
+            return itemEntities;
+
+//            if(itemEntities.isEmpty()){
+//                 return itemTypes;
+//            }
+//            else{
+//                for(ItemType i : itemEntities ){
+//                    ItemDTO itemDTO = new ItemDTO();
+//                    itemDTO.setCategory(i.getCategory());
+//                    itemDTO.setId(i.getItem_id());
+//                    itemDTO.setImage(i.getImage());
+//                    itemDTO.setItem_name(i.getItem_name());
+//                    itemDTO.setPrice(i.getPrice());
+//                    itemDTO.setSize(i.getSize());
+//                    itemDTO.setType(i.getType());
+//
+//                    itemDTOS.add(itemDTO);
+//                }
+//                return itemDTOS;
+//            }
 
         }catch (Exception e) {
             LOGGER.error("viewItemsByCategory : " + e.getMessage(), e);
