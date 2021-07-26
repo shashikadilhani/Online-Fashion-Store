@@ -100,4 +100,38 @@ public class ItemServiceImpl implements ItemService {
             throw e;
         }
     }
+
+    @Override
+    public List<ItemDTO> viewItemsByType(String type, String category) {
+        LOGGER.info("Execute items by item Type");
+        try {
+            List<ItemDTO> itemDTOS = new ArrayList<>();
+            List<String> itemEntities = itemRepository.findItemsByTypeAndCategory(type,category);
+
+            if(itemEntities.isEmpty()){
+                 return itemDTOS;
+            }
+            else{
+
+                String y = itemEntities.get(0);
+                for(String i : itemEntities ){
+                    ItemDTO itemDTO = new ItemDTO();
+
+
+//                    itemDTO.setImage(i[0]);
+//                    itemDTO.setItem_name(i.indexOf(2));
+//                    byte[] gg = i.getBytes();
+//                    itemDTO.setSerial_no(i.indexOf(0));
+//
+//
+//                    itemDTOS.add(itemDTO);
+                }
+                return itemDTOS;
+            }
+
+        }catch (Exception e) {
+            LOGGER.error("viewItemsByItemTYpe : " + e.getMessage(), e);
+            throw e;
+        }
+    }
 }

@@ -11,4 +11,6 @@ public interface ItemService {
     void addItem(AddItemsReqDTO addItemsReqDTO);
 
     List<ItemType> viewItemTypesByCategory(String category);
+
+    List<ItemDTO> viewItemsByType(String type, String category);
 }

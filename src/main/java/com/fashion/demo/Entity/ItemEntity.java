@@ -16,6 +16,8 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long item_id;
 
+    private long item_serial_no;
+
     private String item_name;
 
     @Enumerated(EnumType.STRING)
@@ -50,10 +52,12 @@ public class ItemEntity {
     public ItemEntity() {
     }
 
-    public ItemEntity(long item_id, String item_name, ItemCategory category, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
+    public ItemEntity(long item_id, long item_serial_no, String item_name, ItemCategory category, ItemType type, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
         this.item_id = item_id;
+        this.item_serial_no = item_serial_no;
         this.item_name = item_name;
         this.category = category;
+        this.type = type;
         this.size = size;
         this.stock_type = stock_type;
         this.addedDate = addedDate;
@@ -61,6 +65,14 @@ public class ItemEntity {
         this.item_stock = item_stock;
         this.orderItemCountEntity = orderItemCountEntity;
         this.image = image;
+    }
+
+    public long getItem_serial_no() {
+        return item_serial_no;
+    }
+
+    public void setItem_serial_no(long item_serial_no) {
+        this.item_serial_no = item_serial_no;
     }
 
     public String getImage() {

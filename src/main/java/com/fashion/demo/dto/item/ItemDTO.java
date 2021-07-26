@@ -18,8 +18,15 @@ public class ItemDTO {
     private SizeType size;
     private float price;
     private String image;
+    private long serial_no;
 
     public ItemDTO() {
+    }
+
+    public ItemDTO(String item_name, String image, long serial_no) {
+        this.item_name = item_name;
+        this.image = image;
+        this.serial_no = serial_no;
     }
 
     public long getId() {
@@ -78,6 +85,14 @@ public class ItemDTO {
         this.image = image;
     }
 
+    public long getSerial_no() {
+        return serial_no;
+    }
+
+    public void setSerial_no(long serial_no) {
+        this.serial_no = serial_no;
+    }
+
     @Override
     public String toString() {
         return "ItemDTO{" +
@@ -88,6 +103,7 @@ public class ItemDTO {
                 ", size=" + size +
                 ", price=" + price +
                 ", image='" + image + '\'' +
+                ", serial_no=" + serial_no +
                 '}';
     }
 }
