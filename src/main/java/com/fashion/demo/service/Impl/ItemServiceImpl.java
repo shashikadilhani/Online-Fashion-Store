@@ -7,6 +7,7 @@ import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.ItemRepository;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
 import com.fashion.demo.dto.item.DistinctItemDTO;
+import com.fashion.demo.dto.item.ItemDTO;
 import com.fashion.demo.service.ItemService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -67,32 +68,9 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemType> viewItemTypesByCategory(String category) {
         LOGGER.info("Execute items by category");
         try {
-//            List<ItemDTO> itemDTOS = new ArrayList<>();
             List<ItemType> itemTypes = new ArrayList<>();
             List<ItemType> itemEntities = itemRepository.findItemTypesByCategory(category);
-
-
             return itemEntities;
-
-//            if(itemEntities.isEmpty()){
-//                 return itemTypes;
-//            }
-//            else{
-//                for(ItemType i : itemEntities ){
-//                    ItemDTO itemDTO = new ItemDTO();
-//                    itemDTO.setCategory(i.getCategory());
-//                    itemDTO.setId(i.getItem_id());
-//                    itemDTO.setImage(i.getImage());
-//                    itemDTO.setItem_name(i.getItem_name());
-//                    itemDTO.setPrice(i.getPrice());
-//                    itemDTO.setSize(i.getSize());
-//                    itemDTO.setType(i.getType());
-//
-//                    itemDTOS.add(itemDTO);
-//                }
-//                return itemDTOS;
-//            }
-
         }catch (Exception e) {
             LOGGER.error("viewItemsByCategory : " + e.getMessage(), e);
             throw e;
@@ -123,6 +101,35 @@ public class ItemServiceImpl implements ItemService {
 
         }catch (Exception e) {
             LOGGER.error("viewItemsByItemTYpe : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<ItemDTO> viewItemsBySerialNo(int serial_no) {
+        LOGGER.info("Execute get items by serial no");
+        try {
+            List<ItemDTO> itemDTOS = new ArrayList<>();
+            List<ItemEntity> itemEntities = itemRepository.findItemTypesBySerial(serial_no);
+            if(!itemEntities.isEmpty()){
+                for(ItemEntity e : itemEntities){
+                    ItemDTO itemDTO = new ItemDTO();
+                    itemDTO.setType(e.getType());
+                    itemDTO.setSize(e.getSize());
+                    itemDTO.setPrice(e.getPrice());
+                    itemDTO.setItem_name(e.getItem_name());
+                    itemDTO.setId(e.getItem_id());
+                    itemDTO.setImage(e.getImage());
+                    itemDTO.setCategory(e.getCategory());
+                    itemDTO.setSerial_no(serial_no);
+                    itemDTOS.add(itemDTO);
+                }
+                return itemDTOS;
+            } else{
+                return itemDTOS;
+            }
+        }catch (Exception e) {
+            LOGGER.error("get items by serial no : " + e.getMessage(), e);
             throw e;
         }
     }

@@ -15,4 +15,7 @@ public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
     @Query(value = "select distinct item_serial_no, item_name, image from tbl_item where item_type =?1 and item_category =?2 ", nativeQuery = true)
     List<String> findItemsByTypeAndCategory(String type, String category);
+
+    @Query(value = "select * from tbl_item where item_serial_no =?1 ", nativeQuery = true)
+    List<ItemEntity> findItemTypesBySerial(int serial_no);
 }
