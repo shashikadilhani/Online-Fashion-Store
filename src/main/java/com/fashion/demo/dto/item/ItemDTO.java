@@ -1,14 +1,8 @@
 package com.fashion.demo.dto.item;
 
-import com.fashion.demo.Entity.OrderItemCountEntity;
 import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.Enum.SizeType;
-import com.fashion.demo.Enum.StockStatus;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import javax.persistence.*;
-import java.util.Date;
 
 public class ItemDTO {
     private long id;
@@ -18,12 +12,12 @@ public class ItemDTO {
     private SizeType size;
     private float price;
     private String image;
-    private long serial_no;
+    private int serial_no;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(String item_name, String image, long serial_no) {
+    public ItemDTO(String item_name, String image, int serial_no) {
         this.item_name = item_name;
         this.image = image;
         this.serial_no = serial_no;
@@ -89,7 +83,7 @@ public class ItemDTO {
         return serial_no;
     }
 
-    public void setSerial_no(long serial_no) {
+    public void setSerial_no(int serial_no) {
         this.serial_no = serial_no;
     }
 

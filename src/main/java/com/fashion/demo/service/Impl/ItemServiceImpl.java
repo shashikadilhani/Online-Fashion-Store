@@ -1,17 +1,15 @@
 package com.fashion.demo.service.Impl;
 
 import com.fashion.demo.Entity.ItemEntity;
-import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.Enum.StockStatus;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.ItemRepository;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
-import com.fashion.demo.dto.item.ItemDTO;
+import com.fashion.demo.dto.item.DistinctItemDTO;
 import com.fashion.demo.service.ItemService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.hibernate.boot.model.naming.ImplicitEntityNameSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -102,29 +100,23 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDTO> viewItemsByType(String type, String category) {
+    public List<DistinctItemDTO> viewItemsByType(String type, String category) {
         LOGGER.info("Execute items by item Type");
         try {
-            List<ItemDTO> itemDTOS = new ArrayList<>();
+            List<DistinctItemDTO> itemDTOS = new ArrayList<>();
             List<String> itemEntities = itemRepository.findItemsByTypeAndCategory(type,category);
 
             if(itemEntities.isEmpty()){
                  return itemDTOS;
             }
             else{
-
-                String y = itemEntities.get(0);
-                for(String i : itemEntities ){
-                    ItemDTO itemDTO = new ItemDTO();
-
-
-//                    itemDTO.setImage(i[0]);
-//                    itemDTO.setItem_name(i.indexOf(2));
-//                    byte[] gg = i.getBytes();
-//                    itemDTO.setSerial_no(i.indexOf(0));
-//
-//
-//                    itemDTOS.add(itemDTO);
+                for(String obj : itemEntities){
+                    DistinctItemDTO itemDTO = new DistinctItemDTO();
+                    String[] x = obj.split(",");
+                    itemDTO.setImage(x[2]);
+                    itemDTO.setItem_name(x[1]);
+                    itemDTO.setSerial_no(Integer.parseInt(x[0]));
+                    itemDTOS.add(itemDTO);
                 }
                 return itemDTOS;
             }

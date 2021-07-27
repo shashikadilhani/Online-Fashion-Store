@@ -1,8 +1,7 @@
 package com.fashion.demo.Controller;
 
-import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.ItemType;
-import com.fashion.demo.dto.item.ItemDTO;
+import com.fashion.demo.dto.item.DistinctItemDTO;
 import com.fashion.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +33,7 @@ public class ItemController {
     @GetMapping(value = "/view/type" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity viewItemsByTypeandCategory(@RequestParam String type, @RequestParam String category) {
 
-        List<ItemDTO> itemDTOS =  itemService.viewItemsByType(type, category);
+        List<DistinctItemDTO> itemDTOS =  itemService.viewItemsByType(type, category);
         return new ResponseEntity((itemDTOS), HttpStatus.OK);
     }
 }
