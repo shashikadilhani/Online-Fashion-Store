@@ -45,4 +45,6 @@ public class ItemController {
         List<ItemDTO> itemDTOS =  itemService.viewItemsBySerialNo(serial_no);
         return new ResponseEntity((itemDTOS), HttpStatus.OK);
     }
+
+
 }
