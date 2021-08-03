@@ -15,4 +15,6 @@ public interface ItemService {
     List<DistinctItemDTO> viewItemsByType(String type, String category);
 
     List<ItemDTO> viewItemsBySerialNo(int serial_no);
+
+    List<String> viewItemsSizes(int serial_no);
 }

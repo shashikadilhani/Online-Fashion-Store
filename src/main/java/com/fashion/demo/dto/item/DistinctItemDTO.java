@@ -2,6 +2,7 @@ package com.fashion.demo.dto.item;
 
 public class DistinctItemDTO {
 
+    private String id;
     private String item_name;
     private String image;
     private int serial_no;
@@ -9,12 +10,12 @@ public class DistinctItemDTO {
     public DistinctItemDTO() {
     }
 
-    public DistinctItemDTO(String item_name, String image, int serial_no) {
+    public DistinctItemDTO(String id, String item_name, String image, int serial_no) {
+        this.id = id;
         this.item_name = item_name;
         this.image = image;
         this.serial_no = serial_no;
     }
-
 
     public String getItem_name() {
         return item_name;
@@ -40,9 +41,18 @@ public class DistinctItemDTO {
         this.serial_no = serial_no;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "ItemDTO{" +
+        return "DistinctItemDTO{" +
+                "id=" + id +
                 ", item_name='" + item_name + '\'' +
                 ", image='" + image + '\'' +
                 ", serial_no=" + serial_no +

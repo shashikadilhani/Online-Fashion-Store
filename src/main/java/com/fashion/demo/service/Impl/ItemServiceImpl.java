@@ -91,9 +91,10 @@ public class ItemServiceImpl implements ItemService {
                 for(String obj : itemEntities){
                     DistinctItemDTO itemDTO = new DistinctItemDTO();
                     String[] x = obj.split(",");
-                    itemDTO.setImage(x[2]);
-                    itemDTO.setItem_name(x[1]);
-                    itemDTO.setSerial_no(Integer.parseInt(x[0]));
+                    itemDTO.setImage(x[3]);
+                    itemDTO.setItem_name(x[2]);
+                    itemDTO.setSerial_no(Integer.parseInt(x[1]));
+                    itemDTO.setId(x[0]);
                     itemDTOS.add(itemDTO);
                 }
                 return itemDTOS;
@@ -130,6 +131,27 @@ public class ItemServiceImpl implements ItemService {
             }
         }catch (Exception e) {
             LOGGER.error("get items by serial no : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<String> viewItemsSizes(int serial_no) {
+        LOGGER.info("Execute get item sizes");
+        try {
+            List<String> itemsizes = new ArrayList<>();
+            List<ItemEntity> itemEntities = itemRepository.findItemTypesBySerial(serial_no);
+            if (!itemEntities.isEmpty()) {
+                for (ItemEntity e : itemEntities) {
+                    String size = e.getSize().toString();
+                    itemsizes.add(size);
+                }
+                return itemsizes;
+            } else {
+                return itemsizes;
+            }
+        } catch (Exception e) {
+            LOGGER.error("get item sizes : " + e.getMessage(), e);
             throw e;
         }
     }
