@@ -30,6 +30,13 @@ public class ItemStockEntity {
     public ItemStockEntity() {
     }
 
+    public ItemStockEntity(long item_stock_id, StockStatus stock_type, int item_stock_count, ItemEntity itemEntity) {
+        this.item_stock_id = item_stock_id;
+        this.stock_type = stock_type;
+        this.item_stock_count = item_stock_count;
+        this.itemEntity = itemEntity;
+    }
+
     public long getItem_stock_id() {
         return item_stock_id;
     }

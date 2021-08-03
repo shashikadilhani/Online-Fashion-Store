@@ -32,26 +32,28 @@ public class ItemEntity {
     @Column(name ="size")
     private SizeType size;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name ="stock")
-//    private StockStatus stock_type;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date addedDate;
 
     private float price;
-//    private int item_stock;
-
-//    @OneToOne
-//    @JoinColumn(name = "order_item_id", unique = true)
-//    private OrderItemCountEntity orderItemCountEntity;
 
     private String image;
 
     public ItemEntity() {
     }
 
+    public ItemEntity(long item_id, long item_serial_no, String item_name, ItemCategory category, ItemType type, SizeType size, Date addedDate, float price, String image) {
+        this.item_id = item_id;
+        this.item_serial_no = item_serial_no;
+        this.item_name = item_name;
+        this.category = category;
+        this.type = type;
+        this.size = size;
+        this.addedDate = addedDate;
+        this.price = price;
+        this.image = image;
+    }
 
     public long getItem_serial_no() {
         return item_serial_no;

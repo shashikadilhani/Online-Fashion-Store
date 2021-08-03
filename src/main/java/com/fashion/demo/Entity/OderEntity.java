@@ -16,9 +16,6 @@ public class OderEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderedDate;
 
-    @OneToMany(mappedBy = "oderEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<OrderItemCountEntity> orderItemCountEntities = new ArrayList<>();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity userEntity;
@@ -28,11 +25,19 @@ public class OderEntity {
     public OderEntity() {
     }
 
-    public OderEntity(long order_id, Date orderedDate, List<OrderItemCountEntity> orderItemCountEntities, float totalPrice) {
+    public OderEntity(long order_id, Date orderedDate, UserEntity userEntity, float totalPrice) {
         this.order_id = order_id;
         this.orderedDate = orderedDate;
-        this.orderItemCountEntities = orderItemCountEntities;
+        this.userEntity = userEntity;
         this.totalPrice = totalPrice;
+    }
+
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     public long getOrder_id() {
@@ -50,7 +55,6 @@ public class OderEntity {
     public void setOrderedDate(Date orderedDate) {
         this.orderedDate = orderedDate;
     }
-
 
     public float getTotalPrice() {
         return totalPrice;

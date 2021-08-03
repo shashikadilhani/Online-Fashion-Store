@@ -1,8 +1,5 @@
 package com.fashion.demo.Entity;
-
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "tbl_order_item_count")
@@ -10,45 +7,30 @@ public class OrderItemCountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long order_item_id;
+    private long order_item_count_id;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "tbl_order_item", joinColumns = {
-            @JoinColumn(name = "order_item_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
-    private List<ItemEntity> items = new ArrayList<>();
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_order_id")
-    private OderEntity oderEntity;
+    private  OderEntity oderEntity;
 
-    private int item_count;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_item_id")
+    private ItemEntity itemEntity;
 
-    public OrderItemCountEntity() {
-    }
-
-    public OrderItemCountEntity(long order_item_id, ItemEntity itemEntity, OderEntity oderEntity, int item_count) {
-        this.order_item_id = order_item_id;
-//        this.itemEntity = itemEntity;
+    public OrderItemCountEntity(long order_item_count_id, OderEntity oderEntity, ItemEntity itemEntity, int item_count) {
+        this.order_item_count_id = order_item_count_id;
         this.oderEntity = oderEntity;
+        this.itemEntity = itemEntity;
         this.item_count = item_count;
     }
 
-    public long getOrder_item_id() {
-        return order_item_id;
+    public long getOrder_item_count_id() {
+        return order_item_count_id;
     }
 
-    public void setOrder_item_id(long order_item_id) {
-        this.order_item_id = order_item_id;
+    public void setOrder_item_count_id(long order_item_count_id) {
+        this.order_item_count_id = order_item_count_id;
     }
-
-//    public ItemEntity getItemEntity() {
-//        return itemEntity;
-//    }
-//
-//    public void setItemEntity(ItemEntity itemEntity) {
-//        this.itemEntity = itemEntity;
-//    }
 
     public OderEntity getOderEntity() {
         return oderEntity;
@@ -56,6 +38,19 @@ public class OrderItemCountEntity {
 
     public void setOderEntity(OderEntity oderEntity) {
         this.oderEntity = oderEntity;
+    }
+
+    public ItemEntity getItemEntity() {
+        return itemEntity;
+    }
+
+    public void setItemEntity(ItemEntity itemEntity) {
+        this.itemEntity = itemEntity;
+    }
+
+    private int item_count;
+
+    public OrderItemCountEntity() {
     }
 
     public int getItem_count() {
