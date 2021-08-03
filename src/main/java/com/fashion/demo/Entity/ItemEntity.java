@@ -32,40 +32,26 @@ public class ItemEntity {
     @Column(name ="size")
     private SizeType size;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name ="stock")
-    private StockStatus stock_type;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name ="stock")
+//    private StockStatus stock_type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     private Date addedDate;
 
     private float price;
-    private int item_stock;
+//    private int item_stock;
 
-    @OneToOne
-    @JoinColumn(name = "order_item_id", unique = true)
-    private OrderItemCountEntity orderItemCountEntity;
+//    @OneToOne
+//    @JoinColumn(name = "order_item_id", unique = true)
+//    private OrderItemCountEntity orderItemCountEntity;
 
     private String image;
 
     public ItemEntity() {
     }
 
-    public ItemEntity(long item_id, long item_serial_no, String item_name, ItemCategory category, ItemType type, SizeType size, StockStatus stock_type, Date addedDate, float price, int item_stock, OrderItemCountEntity orderItemCountEntity, String image) {
-        this.item_id = item_id;
-        this.item_serial_no = item_serial_no;
-        this.item_name = item_name;
-        this.category = category;
-        this.type = type;
-        this.size = size;
-        this.stock_type = stock_type;
-        this.addedDate = addedDate;
-        this.price = price;
-        this.item_stock = item_stock;
-        this.orderItemCountEntity = orderItemCountEntity;
-        this.image = image;
-    }
 
     public long getItem_serial_no() {
         return item_serial_no;
@@ -81,14 +67,6 @@ public class ItemEntity {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public StockStatus getStock_type() {
-        return stock_type;
-    }
-
-    public void setStock_type(StockStatus stock_type) {
-        this.stock_type = stock_type;
     }
 
     public SizeType getSize() {
@@ -139,27 +117,11 @@ public class ItemEntity {
         this.price = price;
     }
 
-    public float getItem_stock() {
-        return item_stock;
-    }
-
-    public void setItem_stock(int item_stock) {
-        this.item_stock = item_stock;
-    }
-
     public String getItem_name() {
         return item_name;
     }
 
     public void setItem_name(String item_name) {
         this.item_name = item_name;
-    }
-
-    public OrderItemCountEntity getOrderItemCountEntity() {
-        return orderItemCountEntity;
-    }
-
-    public void setOrderItemCountEntity(OrderItemCountEntity orderItemCountEntity) {
-        this.orderItemCountEntity = orderItemCountEntity;
     }
 }

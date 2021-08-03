@@ -1,6 +1,8 @@
 package com.fashion.demo.Entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_order_item_count")
@@ -10,11 +12,14 @@ public class OrderItemCountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long order_item_id;
 
-    @OneToOne(mappedBy = "orderItemCountEntity", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private ItemEntity itemEntity;
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "tbl_order_item", joinColumns = {
+            @JoinColumn(name = "order_item_id") }, inverseJoinColumns = { @JoinColumn(name = "item_id") })
+    private List<ItemEntity> items = new ArrayList<>();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "fk_order_id")
     private OderEntity oderEntity;
 
     private int item_count;
@@ -24,7 +29,7 @@ public class OrderItemCountEntity {
 
     public OrderItemCountEntity(long order_item_id, ItemEntity itemEntity, OderEntity oderEntity, int item_count) {
         this.order_item_id = order_item_id;
-        this.itemEntity = itemEntity;
+//        this.itemEntity = itemEntity;
         this.oderEntity = oderEntity;
         this.item_count = item_count;
     }
@@ -37,13 +42,13 @@ public class OrderItemCountEntity {
         this.order_item_id = order_item_id;
     }
 
-    public ItemEntity getItemEntity() {
-        return itemEntity;
-    }
-
-    public void setItemEntity(ItemEntity itemEntity) {
-        this.itemEntity = itemEntity;
-    }
+//    public ItemEntity getItemEntity() {
+//        return itemEntity;
+//    }
+//
+//    public void setItemEntity(ItemEntity itemEntity) {
+//        this.itemEntity = itemEntity;
+//    }
 
     public OderEntity getOderEntity() {
         return oderEntity;

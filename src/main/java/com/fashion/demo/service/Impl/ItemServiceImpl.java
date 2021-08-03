@@ -43,16 +43,16 @@ public class ItemServiceImpl implements ItemService {
                 itemEntity.setImage(addItemsReqDTO.getImage());
                 itemEntity.setItem_name(addItemsReqDTO.getItem_name());
                 itemEntity.setSize(addItemsReqDTO.getSize());
-                itemEntity.setItem_stock(addItemsReqDTO.getItem_stock());
+//                itemEntity.setItem_stock(addItemsReqDTO.getItem_stock());
                 itemEntity.setAddedDate(new Date());
 
-                if(addItemsReqDTO.getItem_stock()<100 && addItemsReqDTO.getItem_stock()>0){
-                    itemEntity.setStock_type(StockStatus.FINAL_STAGE);
-                } else if(addItemsReqDTO.getItem_stock()==0){
-                    itemEntity.setStock_type(StockStatus.SOLD_OUT);
-                }else{
-                    itemEntity.setStock_type(StockStatus.AVAILABLE);
-                }
+//                if(addItemsReqDTO.getItem_stock()<100 && addItemsReqDTO.getItem_stock()>0){
+//                    itemEntity.setStock_type(StockStatus.FINAL_STAGE);
+//                } else if(addItemsReqDTO.getItem_stock()==0){
+//                    itemEntity.setStock_type(StockStatus.SOLD_OUT);
+//                }else{
+//                    itemEntity.setStock_type(StockStatus.AVAILABLE);
+//                }
 
                 itemRepository.save(itemEntity);
             } else{

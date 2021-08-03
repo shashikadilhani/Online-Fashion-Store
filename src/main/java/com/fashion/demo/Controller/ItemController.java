@@ -22,7 +22,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    //get distinct item types based on category
+    //get distinct item types based on category (blouse,skirt,saree...)
     @GetMapping(value = "/view/catogery/types" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity viewItemTypesByCategory(@RequestParam String cate) {
 
@@ -30,7 +30,15 @@ public class ItemController {
         return new ResponseEntity((itemTypes), HttpStatus.OK);
     }
 
-    //get all items by item type and category
+//    //get all items by item type and category
+//    @GetMapping(value = "/view/type" ,produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity viewItemsByTypeandCategory(@RequestParam String type, @RequestParam String category) {
+//
+//        List<DistinctItemDTO> itemDTOS =  itemService.viewItemsByType(type, category);
+//        return new ResponseEntity((itemDTOS), HttpStatus.OK);
+//    }
+
+        //get all items by item type and category
     @GetMapping(value = "/view/type" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity viewItemsByTypeandCategory(@RequestParam String type, @RequestParam String category) {
 
@@ -38,13 +46,14 @@ public class ItemController {
         return new ResponseEntity((itemDTOS), HttpStatus.OK);
     }
 
+
     //getItemBySerialNo
-//    @GetMapping(value = "/view/serial" ,produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity viewItemsBySerial(@RequestParam int serial_no) {
-//
-//        List<ItemDTO> itemDTOS =  itemService.viewItemsBySerialNo(serial_no);
-//        return new ResponseEntity((itemDTOS), HttpStatus.OK);
-//    }
+    @GetMapping(value = "/view/serial" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewItemsBySerial(@RequestParam int serial_no) {
+
+        List<ItemDTO> itemDTOS =  itemService.viewItemsBySerialNo(serial_no);
+        return new ResponseEntity((itemDTOS), HttpStatus.OK);
+    }
 
 
 }
