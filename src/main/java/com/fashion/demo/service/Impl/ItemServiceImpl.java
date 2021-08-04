@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
 
@@ -152,6 +153,31 @@ public class ItemServiceImpl implements ItemService {
             }
         } catch (Exception e) {
             LOGGER.error("get item sizes : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public ItemDTO viewItemDetails(long id) {
+        LOGGER.info("Execute get item details");
+        try {
+            ItemDTO itemDetails = new ItemDTO();
+            Optional<ItemEntity> itemEntities = itemRepository.findById(id);
+            if(!itemEntities.isPresent()){
+                itemDetails.setSerial_no(itemEntities.get().getItem_serial_no());
+                itemDetails.setCategory(itemEntities.get().getCategory());
+                itemDetails.setImage(itemEntities.get().getImage());
+                itemDetails.setId(itemEntities.get().getItem_id());
+                itemDetails.setItem_name(itemEntities.get().getItem_name());
+                itemDetails.setPrice(itemEntities.get().getPrice());
+                itemDetails.setType(itemEntities.get().getType());
+
+                return itemDetails;
+            } else{
+                return itemDetails;
+            }
+        }catch (Exception e) {
+            LOGGER.error("get item details : " + e.getMessage(), e);
             throw e;
         }
     }

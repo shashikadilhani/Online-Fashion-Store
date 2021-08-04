@@ -12,13 +12,24 @@ public class ItemDTO {
     private SizeType size;
     private float price;
     private String image;
-    private int serial_no;
+    private long serial_no;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(String item_name, String image, int serial_no) {
+    public ItemDTO(String item_name, String image, long serial_no) {
         this.item_name = item_name;
+        this.image = image;
+        this.serial_no = serial_no;
+    }
+
+    public ItemDTO(long id, String item_name, ItemCategory category, ItemType type, SizeType size, float price, String image, long serial_no) {
+        this.id = id;
+        this.item_name = item_name;
+        this.category = category;
+        this.type = type;
+        this.size = size;
+        this.price = price;
         this.image = image;
         this.serial_no = serial_no;
     }
@@ -83,7 +94,7 @@ public class ItemDTO {
         return serial_no;
     }
 
-    public void setSerial_no(int serial_no) {
+    public void setSerial_no(long serial_no) {
         this.serial_no = serial_no;
     }
 

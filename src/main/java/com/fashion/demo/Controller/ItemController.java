@@ -30,7 +30,7 @@ public class ItemController {
         return new ResponseEntity((itemTypes), HttpStatus.OK);
     }
 
-        //get all items by item type and category
+    //get all items by item type and category
     @GetMapping(value = "/view/type" ,produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity viewItemsByTypeandCategory(@RequestParam String type, @RequestParam String category) {
 
@@ -54,5 +54,12 @@ public class ItemController {
         return new ResponseEntity((itemSizes), HttpStatus.OK);
     }
 
+    //view item details
+    @GetMapping(value = "/view/item/detail" ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewItemDeetails(@RequestParam long id) {
+
+        ItemDTO itemDetails =  itemService.viewItemDetails(id);
+        return new ResponseEntity((itemDetails), HttpStatus.OK);
+    }
 
 }

@@ -17,4 +17,6 @@ public interface ItemService {
     List<ItemDTO> viewItemsBySerialNo(int serial_no);
 
     List<String> viewItemsSizes(int serial_no);
+
+    ItemDTO viewItemDetails(long id);
 }
