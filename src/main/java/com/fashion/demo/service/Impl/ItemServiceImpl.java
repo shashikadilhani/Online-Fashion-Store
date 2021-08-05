@@ -1,14 +1,17 @@
 package com.fashion.demo.service.Impl;
 
 import com.fashion.demo.Entity.ItemEntity;
+import com.fashion.demo.Entity.ItemStockEntity;
 import com.fashion.demo.Enum.ItemType;
 import com.fashion.demo.Enum.StockStatus;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.ItemRepository;
+import com.fashion.demo.Repository.ItemStockRepository;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
 import com.fashion.demo.dto.item.DistinctItemDTO;
 import com.fashion.demo.dto.item.ItemDTO;
 import com.fashion.demo.service.ItemService;
+import com.fashion.demo.util.ImageSaveAndUpdate;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -21,16 +24,21 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
+import static com.fashion.demo.constant.ApplicationConstant.ITEM_ICON_IMG;
 
 @Service(value = "itemService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final ItemStockRepository itemStockRepository;
+    private final ImageSaveAndUpdate imageSaveAndUpdate;
     private static final Logger LOGGER = LogManager.getLogger(ItemServiceImpl.class);
 
-    public ItemServiceImpl(ItemRepository itemRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, ItemStockRepository itemStockRepository, ImageSaveAndUpdate imageSaveAndUpdate) {
         this.itemRepository = itemRepository;
+        this.itemStockRepository = itemStockRepository;
+        this.imageSaveAndUpdate = imageSaveAndUpdate;
     }
 
     @Override
@@ -38,24 +46,91 @@ public class ItemServiceImpl implements ItemService {
         LOGGER.info("Execute method addItem ");
         try {
             if(!addItemsReqDTO.equals(null)){
-                ItemEntity itemEntity = new ItemEntity();
-                itemEntity.setPrice(addItemsReqDTO.getPrice());
-                itemEntity.setCategory(addItemsReqDTO.getCategory());
-                itemEntity.setImage(addItemsReqDTO.getImage());
-                itemEntity.setItem_name(addItemsReqDTO.getItem_name());
-                itemEntity.setSize(addItemsReqDTO.getSize());
-//                itemEntity.setItem_stock(addItemsReqDTO.getItem_stock());
-                itemEntity.setAddedDate(new Date());
 
-//                if(addItemsReqDTO.getItem_stock()<100 && addItemsReqDTO.getItem_stock()>0){
-//                    itemEntity.setStock_type(StockStatus.FINAL_STAGE);
-//                } else if(addItemsReqDTO.getItem_stock()==0){
-//                    itemEntity.setStock_type(StockStatus.SOLD_OUT);
-//                }else{
-//                    itemEntity.setStock_type(StockStatus.AVAILABLE);
-//                }
+                Optional<ItemEntity> item = itemRepository.findById(addItemsReqDTO.getItem_id());
 
-                itemRepository.save(itemEntity);
+                //add as a new item=============================================================
+                if(!item.isPresent()){
+                    ItemEntity itemEntity = new ItemEntity();
+                    itemEntity.setPrice(addItemsReqDTO.getPrice());
+                    itemEntity.setCategory(addItemsReqDTO.getCategory());
+                    itemEntity.setItem_name(addItemsReqDTO.getItem_name());
+                    itemEntity.setSize(addItemsReqDTO.getSize());
+                    itemEntity.setItem_name(addItemsReqDTO.getItem_name());
+                    itemEntity.setType(addItemsReqDTO.getType());
+                    itemEntity.setItem_serial_no(addItemsReqDTO.getItem_serial_no());
+
+                    //create stock entity
+                    ItemStockEntity stockEntity = new ItemStockEntity();
+                    stockEntity.setItem_stock_count(addItemsReqDTO.getItem_stock_count());
+                    stockEntity.setItemEntity(itemEntity);
+
+                    if(addItemsReqDTO.getItem_stock_count()>100){
+                        stockEntity.setStock_type(StockStatus.AVAILABLE);
+                    } if(addItemsReqDTO.getItem_stock_count()<100 && addItemsReqDTO.getItem_stock_count()>0){
+                        stockEntity.setStock_type(StockStatus.FINAL_STAGE);
+                    } else{
+                        stockEntity.setStock_type(StockStatus.SOLD_OUT);
+                    }
+
+                    //image
+                    itemEntity.setImage(imageSaveAndUpdate.saveOrUpdateImage(addItemsReqDTO.getImage(),ITEM_ICON_IMG));
+                    itemStockRepository.save(stockEntity);
+                    itemRepository.save(itemEntity);
+
+                }
+                //Update Exsisting Item=============================================================
+                else{
+                    item.get().setItem_serial_no(addItemsReqDTO.getItem_serial_no());
+                    item.get().setType(addItemsReqDTO.getType());
+                    item.get().setItem_name(addItemsReqDTO.getItem_name());
+                    item.get().setAddedDate(new Date());
+                    item.get().setSize(addItemsReqDTO.getSize());
+                    item.get().setPrice(addItemsReqDTO.getPrice());
+                    item.get().setCategory(addItemsReqDTO.getCategory());
+
+                    //check stock
+                    Optional<ItemStockEntity> itemStockEntity = itemStockRepository.findByItemId(addItemsReqDTO.getItem_id());
+
+                    //update existing stock entity
+                    if(itemStockEntity.isPresent()){
+
+                        //update count
+                        int existing_count = itemStockEntity.get().getItem_stock_count();
+                        int new_count = existing_count + addItemsReqDTO.getItem_stock_count();
+                        itemStockEntity.get().setItem_stock_count(new_count);
+
+                        //update stock type
+                        if(new_count>100){
+                            itemStockEntity.get().setStock_type(StockStatus.AVAILABLE);
+                        } if(new_count<100 && new_count>50){
+                            itemStockEntity.get().setStock_type(StockStatus.FINAL_STAGE);
+                        }else{
+                            itemStockEntity.get().setStock_type(StockStatus.SOLD_OUT);
+                        }
+                        itemStockRepository.save(itemStockEntity.get());
+                    }
+
+                    //create new stock entity
+                    else{
+                      // create new item stock entity
+                      ItemStockEntity newStock = new ItemStockEntity();
+                      newStock.setItemEntity(item.get());
+                      newStock.setItem_stock_count(addItemsReqDTO.getItem_stock_count());
+                        if(addItemsReqDTO.getItem_stock_count()>100){
+                            newStock.setStock_type(StockStatus.AVAILABLE);
+                        } if(addItemsReqDTO.getItem_stock_count()<100 && addItemsReqDTO.getItem_stock_count()>50){
+                            newStock.setStock_type(StockStatus.FINAL_STAGE);
+                        }else{
+                            newStock.setStock_type(StockStatus.SOLD_OUT);
+                        }
+                        itemStockRepository.save(newStock);
+                    }
+
+                    //set image
+                    item.get().setImage(imageSaveAndUpdate.saveOrUpdateImage(addItemsReqDTO.getImage(), ITEM_ICON_IMG));
+                    itemRepository.save(item.get());
+                }
             } else{
                 throw new ServiceException (INPUT_NOT_FOUND,"Input Not Found");
             }

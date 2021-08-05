@@ -1,7 +1,6 @@
 package com.fashion.demo.Repository;
 
 import com.fashion.demo.Entity.ItemEntity;
-import com.fashion.demo.Enum.ItemCategory;
 import com.fashion.demo.Enum.ItemType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

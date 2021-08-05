@@ -1,8 +1,10 @@
 package com.fashion.demo.Controller;
 
 import com.fashion.demo.Enum.ItemType;
+import com.fashion.demo.dto.item.AddItemsReqDTO;
 import com.fashion.demo.dto.item.DistinctItemDTO;
 import com.fashion.demo.dto.item.ItemDTO;
+import com.fashion.demo.dto.response.CommonResponseDTO;
 import com.fashion.demo.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,6 +62,14 @@ public class ItemController {
 
         ItemDTO itemDetails =  itemService.viewItemDetails(id);
         return new ResponseEntity((itemDetails), HttpStatus.OK);
+    }
+
+    //add items
+    @PostMapping(value = "/addItems",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
+
+        itemService.addItem(addItemsReqDTO);
+        return new ResponseEntity(new CommonResponseDTO(true, "ItemAddedSuccessfully"), HttpStatus.OK);
     }
 
 }

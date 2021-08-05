@@ -12,12 +12,13 @@ public class AddItemsReqDTO {
     private SizeType size;
     private float price;
     private String image;
-    private int item_stock;
+    private long item_serial_no;
+    private int item_stock_count;
 
     public AddItemsReqDTO() {
     }
 
-    public AddItemsReqDTO(long item_id, String item_name, ItemCategory category, ItemType type, SizeType size, float price, String image, int item_stock) {
+    public AddItemsReqDTO(long item_id, String item_name, ItemCategory category, ItemType type, SizeType size, float price, String image, long item_serial_no, int item_stock_count) {
         this.item_id = item_id;
         this.item_name = item_name;
         this.category = category;
@@ -25,15 +26,24 @@ public class AddItemsReqDTO {
         this.size = size;
         this.price = price;
         this.image = image;
-        this.item_stock = item_stock;
+        this.item_serial_no = item_serial_no;
+        this.item_stock_count = item_stock_count;
     }
 
-    public int getItem_stock() {
-        return item_stock;
+    public int getItem_stock_count() {
+        return item_stock_count;
     }
 
-    public void setItem_stock(int item_stock) {
-        this.item_stock = item_stock;
+    public void setItem_stock_count(int item_stock_count) {
+        this.item_stock_count = item_stock_count;
+    }
+
+    public long getItem_serial_no() {
+        return item_serial_no;
+    }
+
+    public void setItem_serial_no(long item_serial_no) {
+        this.item_serial_no = item_serial_no;
     }
 
     public String getImage() {
@@ -92,6 +102,7 @@ public class AddItemsReqDTO {
         this.type = type;
     }
 
+
     @Override
     public String toString() {
         return "AddItemsReqDTO{" +
@@ -102,7 +113,10 @@ public class AddItemsReqDTO {
                 ", size=" + size +
                 ", price=" + price +
                 ", image='" + image + '\'' +
-                ", item_stock=" + item_stock +
+                ", item_serial_no=" + item_serial_no +
+                ", item_stock_count=" + item_stock_count +
                 '}';
     }
+
+
 }

@@ -17,4 +17,8 @@ public class ApplicationConstant {
     public static final int DUPLICATE_IDENTIFICATION_VALUE = 600;
     public static final int DUPLICATE_EMAIL = 601;
 
+    /*images*/
+    public static final String ITEM_ICON_IMG = "ITEM_ICON_IMG";
+    public static final String USER_ICON_IMG = "USER_ICON_IMG";
+
 }

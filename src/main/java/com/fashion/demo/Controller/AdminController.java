@@ -26,13 +26,6 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @PostMapping(value = "/addItems",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
-
-        itemService.addItem(addItemsReqDTO);
-        return new ResponseEntity(new CommonResponseDTO(true, "ItemAddedSuccessfully"), HttpStatus.OK);
-    }
-
     @GetMapping(value = "/viewAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity viewAll() {
 
