@@ -75,8 +75,8 @@ public class ItemServiceImpl implements ItemService {
 
                     //image
                     itemEntity.setImage(imageSaveAndUpdate.saveOrUpdateImage(addItemsReqDTO.getImage(),ITEM_ICON_IMG));
-                    itemStockRepository.save(stockEntity);
                     itemRepository.save(itemEntity);
+                    itemStockRepository.save(stockEntity);
 
                 }
                 //Update Exsisting Item=============================================================

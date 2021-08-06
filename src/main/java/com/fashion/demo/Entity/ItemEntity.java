@@ -38,6 +38,7 @@ public class ItemEntity {
 
     private float price;
 
+    @Column(length = 5000)
     private String image;
 
     public ItemEntity() {
