@@ -27,6 +27,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
+import java.util.Optional;
+
+import static com.fashion.demo.Enum.RoleName.ROLE_USER;
 
 @RestController
 @CrossOrigin
@@ -87,11 +90,12 @@ public class AuthController {
                 signUpRequest.getEmail(), signUpRequest.getPassword());
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+//
+        String role = "ROLE_USER";
+        Optional<RoleEntity> userRole = roleRepository.findByName(role);
+//                .orElseThrow(() -> new AppException("User Role not set."));
 
-        RoleEntity userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new AppException("User Role not set."));
-
-        user.setRoles(Collections.singleton(userRole));
+        user.setRoles(Collections.singleton(userRole.get()));
 
         UserEntity result = userRepository.save(user);
 

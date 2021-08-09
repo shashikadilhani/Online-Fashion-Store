@@ -1,5 +1,6 @@
 package com.fashion.demo.Entity;
 
+import com.fashion.demo.Enum.RoleName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fashion.demo.Enum.UserGender;
 
@@ -50,6 +51,10 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
+    @Column(name="role")
+    @Enumerated(EnumType.STRING)
+    private RoleName role;
+
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<OderEntity> userOrders = new ArrayList<>();
 
@@ -65,6 +70,14 @@ public class UserEntity {
         this.password = password;
     }
 
+    public Set<RoleEntity> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleEntity> roles) {
+        this.roles = roles;
+    }
+
     public long getId() {
         return id;
     }
@@ -73,12 +86,20 @@ public class UserEntity {
         this.id = id;
     }
 
-    public Set<RoleEntity> getRoles() {
-        return roles;
+    public RoleName getRole() {
+        return role;
     }
 
-    public void setRoles(Set<RoleEntity> roles) {
-        this.roles = roles;
+    public void setRole(RoleName role) {
+        this.role = role;
+    }
+
+    public List<OderEntity> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(List<OderEntity> userOrders) {
+        this.userOrders = userOrders;
     }
 
     public Date getCreatedDate() {

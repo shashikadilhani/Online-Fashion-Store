@@ -21,10 +21,10 @@ public class OrderController {
     }
 
     //Start Order
-    @GetMapping(value = "/start/user_id" ,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity startOrder(@RequestParam long user_id) {
+    @PostMapping(value = "/start/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity startOrder(@PathVariable long user_id) {
 
-        userControllerAuthenticator.validateUser(user_id);
+//        userControllerAuthenticator.validateUser(user_id);
         oderService.createNewOrder(user_id);
         return new ResponseEntity("successfully created", HttpStatus.OK);
     }
