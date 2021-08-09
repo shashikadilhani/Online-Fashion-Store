@@ -1,8 +1,6 @@
 package com.fashion.demo.service.Impl;
 
-import com.fashion.demo.Entity.ItemEntity;
 import com.fashion.demo.Entity.UserEntity;
-import com.fashion.demo.Enum.StockStatus;
 import com.fashion.demo.dto.user.UserDTO;
 import com.fashion.demo.dto.user.UserListDTO;
 import com.fashion.demo.service.UserService;
@@ -85,6 +83,22 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }catch (Exception e) {
             LOGGER.error("getAllUsers : " + e.getMessage(), e);
             throw e;
+        }
+    }
+
+    @Override
+    public UserEntity findUserForValidation(String userId) {
+        try {
+            LOGGER.info("Start findUserForMobile function  username: " + userId);
+
+            UserEntity byEmail = userRepository.findByEmails(userId);
+            if (byEmail != null) {
+                return byEmail;
+            }
+            throw new ServiceException(RESOURCE_NOT_FOUND, "User not found");
+        } catch (Exception e) {
+            LOGGER.error("Function findUserForMobile  : " + e.getMessage());
+            return null;
         }
     }
 }

@@ -38,7 +38,7 @@ public class ItemEntity {
 
     private float price;
 
-    @Column(length = 5000)
+    @Column(length = 50000)
     private String image;
 
     public ItemEntity() {

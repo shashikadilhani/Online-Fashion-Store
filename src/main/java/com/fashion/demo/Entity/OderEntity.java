@@ -1,5 +1,6 @@
 package com.fashion.demo.Entity;
 
+import com.fashion.demo.Enum.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import java.util.*;
@@ -22,14 +23,19 @@ public class OderEntity {
 
     private float totalPrice;
 
+    @Column(name= "status")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     public OderEntity() {
     }
 
-    public OderEntity(long order_id, Date orderedDate, UserEntity userEntity, float totalPrice) {
+    public OderEntity(long order_id, Date orderedDate, UserEntity userEntity, float totalPrice, OrderStatus oderStatus) {
         this.order_id = order_id;
         this.orderedDate = orderedDate;
         this.userEntity = userEntity;
         this.totalPrice = totalPrice;
+        this.orderStatus = oderStatus;
     }
 
     public UserEntity getUserEntity() {
@@ -62,5 +68,13 @@ public class OderEntity {
 
     public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }
