@@ -1,6 +1,7 @@
 package com.fashion.demo.Entity;
 
 import com.fashion.demo.Enum.RoleName;
+import com.fashion.demo.Enum.status;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fashion.demo.Enum.UserGender;
 
@@ -37,6 +38,7 @@ public class UserEntity {
     @Column
     private Date birthday;
     @Column
+    @Enumerated(EnumType.STRING)
     private com.fashion.demo.Enum.status status;
     @Column(nullable = false)
     private String password;
@@ -61,6 +63,22 @@ public class UserEntity {
 
     public UserEntity() {
 
+    }
+
+    public UserEntity(long id, String name, String email, UserGender gender, String photoPath, String username, Date birthday, com.fashion.demo.Enum.status status, String password, Date createdDate, Set<RoleEntity> roles, RoleName role, List<OderEntity> userOrders) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+        this.photoPath = photoPath;
+        this.username = username;
+        this.birthday = birthday;
+        this.status = status;
+        this.password = password;
+        this.createdDate = createdDate;
+        this.roles = roles;
+        this.role = role;
+        this.userOrders = userOrders;
     }
 
     public UserEntity(String name, String email, String username, String password) {

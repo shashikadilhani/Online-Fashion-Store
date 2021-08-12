@@ -9,6 +9,14 @@ public class UserLoginReqDTO {
     @NotBlank
     private String password;
 
+    public UserLoginReqDTO() {
+    }
+
+    public UserLoginReqDTO(@NotBlank String usernameOrEmail, @NotBlank String password) {
+        this.usernameOrEmail = usernameOrEmail;
+        this.password = password;
+    }
+
     public String getUsernameOrEmail() {
         return usernameOrEmail;
     }
@@ -25,4 +33,11 @@ public class UserLoginReqDTO {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "UserLoginReqDTO{" +
+                "usernameOrEmail='" + usernameOrEmail + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

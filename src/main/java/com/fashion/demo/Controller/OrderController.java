@@ -24,8 +24,16 @@ public class OrderController {
     @PostMapping(value = "/start/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity startOrder(@PathVariable long user_id) {
 
-//        userControllerAuthenticator.validateUser(user_id);
         oderService.createNewOrder(user_id);
         return new ResponseEntity("successfully created", HttpStatus.OK);
     }
+
+    //Start Order
+    @PatchMapping(value = "/additems/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addItemsToOrder(@PathVariable long user_id) {
+
+        oderService.addItemsToOrder(user_id);
+        return new ResponseEntity("successfully Added Items", HttpStatus.OK);
+    }
+
 }

@@ -8,18 +8,26 @@ import com.fashion.demo.Exception.AppException;
 import com.fashion.demo.Repository.RoleRepository;
 import com.fashion.demo.Repository.UserRepository;
 import com.fashion.demo.Security.JwtTokenProvider;
+import com.fashion.demo.dto.AuthenticationRequest;
+import com.fashion.demo.dto.AuthenticationResponse;
 import com.fashion.demo.dto.request.UserLoginReqDTO;
 import com.fashion.demo.dto.request.UserRegRequestDTO;
 import com.fashion.demo.dto.response.CommonResponseDTO;
 import com.fashion.demo.dto.response.JwtAuthenticationResponse;
 import com.fashion.demo.service.UserService;
+import com.fashion.demo.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,13 +40,21 @@ import java.util.Optional;
 import static com.fashion.demo.Enum.RoleName.ROLE_USER;
 
 @RestController
-@CrossOrigin
+//@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("auth")
 public class AuthController {
 
     private final UserService userService;
     @Autowired
     AuthenticationManager authenticationManager;
+
+    @Qualifier("userService")
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
     @Autowired
     UserRepository userRepository;
@@ -57,7 +73,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login" ,consumes = MediaType.APPLICATION_JSON_VALUE , produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLoginReqDTO loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -104,6 +120,28 @@ public class AuthController {
                 .buildAndExpand(result.getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new CommonResponseDTO(true, "User registered successfully"));
+    }
+
+    @RequestMapping(value="/authenticate", method=RequestMethod.POST)
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
+            );
+        }
+
+        catch (BadCredentialsException e) {
+            throw new Exception("Incorrect usename or password", e);
+        }
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(authenticationRequest.getUsername());
+
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+
     }
 
 }
