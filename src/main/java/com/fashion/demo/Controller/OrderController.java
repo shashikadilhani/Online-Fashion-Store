@@ -1,5 +1,6 @@
 package com.fashion.demo.Controller;
 
+import com.fashion.demo.dto.Order.OrderDTO;
 import com.fashion.demo.service.OderService;
 import com.fashion.demo.util.UserControllerAuthenticator;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,17 @@ public class OrderController {
         oderService.createNewOrder(user_id);
         return new ResponseEntity("successfully created", HttpStatus.OK);
     }
+    //Start Order
+    @GetMapping(value = "/pending/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getPendingOrder(@PathVariable long user_id) {
+
+        OrderDTO orderDTO = oderService.getPendingOrder(user_id);
+        return new ResponseEntity(orderDTO , HttpStatus.OK);
+    }
+
 
     //Start Order
-    @PatchMapping(value = "/additems/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/additems/{order_id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addItemsToOrder(@PathVariable long user_id) {
 
         oderService.addItemsToOrder(user_id);
