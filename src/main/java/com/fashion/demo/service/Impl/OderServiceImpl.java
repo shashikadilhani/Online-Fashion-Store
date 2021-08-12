@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
+import static com.fashion.demo.constant.ApplicationConstant.UNAUTHORIZED;
 
 @Service(value = "orderService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -37,11 +38,18 @@ public class OderServiceImpl implements OderService {
             //find user
             Optional<UserEntity> user = userRepository.findById(user_id);
             if(user.isPresent()){
-                OderEntity oderEntity = new OderEntity();
-                oderEntity.setOrderedDate(new Date());
-                oderEntity.setUserEntity(user.get());
-                oderEntity.setOrderStatus(OrderStatus.PENDING);
-                orderRepository.save(oderEntity);
+                //find pending orders of user
+                Optional<OderEntity> pending_order = orderRepository.findOrderByUserId(user_id);
+                if(pending_order.isPresent()){
+                    throw new ServiceException(UNAUTHORIZED,"Complete pending orders");
+                }
+                else{
+                    OderEntity oderEntity = new OderEntity();
+                    oderEntity.setOrderedDate(new Date());
+                    oderEntity.setUserEntity(user.get());
+                    oderEntity.setOrderStatus(OrderStatus.PENDING);
+                    orderRepository.save(oderEntity);
+                }
             }
              else{
                 throw new ServiceException(INPUT_NOT_FOUND,"User is Not Authorized!");
