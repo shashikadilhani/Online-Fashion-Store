@@ -5,6 +5,7 @@ import com.fashion.demo.dto.response.CommonDataResponseDTO;
 import com.fashion.demo.dto.response.CommonResponseDTO;
 import com.fashion.demo.dto.user.UserDTO;
 import com.fashion.demo.dto.user.UserListDTO;
+import com.fashion.demo.dto.user.UserViewDTO;
 import com.fashion.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +24,14 @@ public class CustomerController {
     public CustomerController(UserService userService) {
         this.userService = userService;
     }
+
+    @GetMapping(value = "/view/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewUserById(@PathVariable long user_id) {
+
+        UserViewDTO userViewDTO =  userService.viewUser(user_id);
+        return new ResponseEntity(userViewDTO, HttpStatus.OK);
+    }
+
 
     @PostMapping(value = "/addItems/{user_id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
