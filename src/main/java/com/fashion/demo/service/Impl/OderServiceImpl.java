@@ -7,6 +7,7 @@ import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.OrderRepository;
 import com.fashion.demo.Repository.UserRepository;
 import com.fashion.demo.dto.Order.OrderDTO;
+import com.fashion.demo.dto.item.OrderItemsDTO;
 import com.fashion.demo.service.OderService;
 import org.apache.log4j.LogManager;
 import org.springframework.stereotype.Service;
@@ -63,7 +64,34 @@ public class OderServiceImpl implements OderService {
     }
 
     @Override
-    public void addItemsToOrder(long user_id) {
+    public void addItemsToPendingOrder(long user_id, OrderItemsDTO orderItemsDTO) {
+        LOGGER.info("Execute method addItemsToPendingOrder ");
+        try {
+            //find user
+            Optional<UserEntity> user = userRepository.findById(user_id);
+            if(user.isPresent()) {
+                //find pending orders of user
+                Optional<OderEntity> pending_order = orderRepository.findOrderByUserId(user_id);
+
+                OrderDTO pending = new OrderDTO();
+                OderEntity entity = pending_order.get();
+
+                pending.setOrder_id(entity.getOrder_id());
+                pending.setOrderedDate(entity.getOrderedDate());
+                pending.setOrderStatus(entity.getOrderStatus());
+                pending.setTotalPrice(entity.getTotalPrice());
+                pending.setUser_id(user_id);
+
+//                return pending;
+            }
+            else{
+                throw new ServiceException(INPUT_NOT_FOUND,"User is Not Authorized!");
+            }
+        }catch (Exception e) {
+            LOGGER.error("add items to pending order : " + e.getMessage(), e);
+            throw e;
+        }
+
 
     }
 

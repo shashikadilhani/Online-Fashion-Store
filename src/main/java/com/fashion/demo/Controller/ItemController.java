@@ -64,9 +64,9 @@ public class ItemController {
         return new ResponseEntity((itemDetails), HttpStatus.OK);
     }
 
-    //add items
-    @PostMapping(value = "/addItems",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
+    //admin add items to stocks
+    @PostMapping(value = "/addItems/{user_id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity ItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
 
         itemService.addItem(addItemsReqDTO);
         return new ResponseEntity(new CommonResponseDTO(true, "ItemAddedSuccessfully"), HttpStatus.OK);

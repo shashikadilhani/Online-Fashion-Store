@@ -1,6 +1,9 @@
 package com.fashion.demo.Controller;
 
 import com.fashion.demo.dto.Order.OrderDTO;
+import com.fashion.demo.dto.item.AddItemsReqDTO;
+import com.fashion.demo.dto.item.OrderItemsDTO;
+import com.fashion.demo.dto.response.CommonResponseDTO;
 import com.fashion.demo.service.OderService;
 import com.fashion.demo.util.UserControllerAuthenticator;
 import org.springframework.http.HttpStatus;
@@ -36,12 +39,11 @@ public class OrderController {
         return new ResponseEntity(orderDTO , HttpStatus.OK);
     }
 
+    //update pending order by adding item
+    @PatchMapping(value = "/additems/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity addItemsToPendingOrder(@PathVariable long user_id, @RequestBody OrderItemsDTO orderItemsDTO) {
 
-    //Start Order
-    @PatchMapping(value = "/additems/{order_id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addItemsToOrder(@PathVariable long user_id) {
-
-        oderService.addItemsToOrder(user_id);
+        oderService.addItemsToPendingOrder(user_id, orderItemsDTO);
         return new ResponseEntity("successfully Added Items", HttpStatus.OK);
     }
 
