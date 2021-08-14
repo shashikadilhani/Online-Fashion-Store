@@ -1,9 +1,11 @@
 package com.fashion.demo.service.Impl;
 
 import com.fashion.demo.Entity.OderEntity;
+import com.fashion.demo.Entity.OrderItemCountEntity;
 import com.fashion.demo.Entity.UserEntity;
 import com.fashion.demo.Enum.OrderStatus;
 import com.fashion.demo.Exception.ServiceException;
+import com.fashion.demo.Repository.OrderItemCountRepository;
 import com.fashion.demo.Repository.OrderRepository;
 import com.fashion.demo.Repository.UserRepository;
 import com.fashion.demo.dto.Order.OrderDTO;
@@ -14,8 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
@@ -28,10 +30,12 @@ public class OderServiceImpl implements OderService {
     private static final org.apache.log4j.Logger LOGGER = LogManager.getLogger(OderServiceImpl.class);
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+    private final OrderItemCountRepository countRepository;
 
-    public OderServiceImpl(UserRepository userRepository, OrderRepository orderRepository) {
+    public OderServiceImpl(UserRepository userRepository, OrderRepository orderRepository, OrderItemCountRepository countRepository) {
         this.userRepository = userRepository;
         this.orderRepository = orderRepository;
+        this.countRepository = countRepository;
     }
 
     @Override
@@ -72,17 +76,30 @@ public class OderServiceImpl implements OderService {
             if(user.isPresent()) {
                 //find pending orders of user
                 Optional<OderEntity> pending_order = orderRepository.findOrderByUserId(user_id);
+                if(pending_order.isPresent()){
+                    OrderItemCountEntity itemCountEntity = new OrderItemCountEntity();
 
-                OrderDTO pending = new OrderDTO();
-                OderEntity entity = pending_order.get();
+                    //get existing items
+                    List<OrderItemCountEntity> entityList = countRepository.findItemsByOrderId(pending_order.get().getOrder_id());
 
-                pending.setOrder_id(entity.getOrder_id());
-                pending.setOrderedDate(entity.getOrderedDate());
-                pending.setOrderStatus(entity.getOrderStatus());
-                pending.setTotalPrice(entity.getTotalPrice());
-                pending.setUser_id(user_id);
+                    for(OrderItemCountEntity x : entityList){
+                        if(x.getItemEntity().getItem_id()==orderItemsDTO.getItemEntity().getItem_id()){
+                            int count = x.getItem_count();
+                            count = count +1;
+                            x.setItem_count(count);
+                            countRepository.save(x);
+                        }
+                    }
 
-//                return pending;
+                    //create new item count entity
+                    OrderItemCountEntity new_item = new OrderItemCountEntity();
+                    new_item.setItem_count(1);
+                    new_item.setItemEntity(orderItemsDTO.getItemEntity());
+                    new_item.setOderEntity(pending_order.get());
+                    countRepository.save(new_item);
+
+                }else{
+                    throw new ServiceException(INPUT_NOT_FOUND,"Please Create New Order!");}
             }
             else{
                 throw new ServiceException(INPUT_NOT_FOUND,"User is Not Authorized!");
@@ -91,7 +108,6 @@ public class OderServiceImpl implements OderService {
             LOGGER.error("add items to pending order : " + e.getMessage(), e);
             throw e;
         }
-
 
     }
 
