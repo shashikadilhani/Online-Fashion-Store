@@ -9,11 +9,11 @@ public class OrderItemCountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long order_item_count_id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_order_id")
     private  OderEntity oderEntity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "fk_item_id")
     private ItemEntity itemEntity;
 

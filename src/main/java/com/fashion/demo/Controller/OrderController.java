@@ -3,6 +3,7 @@ package com.fashion.demo.Controller;
 import com.fashion.demo.dto.Order.OrderDTO;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
 import com.fashion.demo.dto.item.OrderItemsDTO;
+import com.fashion.demo.dto.item.UpdateItemDTO;
 import com.fashion.demo.dto.response.CommonResponseDTO;
 import com.fashion.demo.service.OderService;
 import com.fashion.demo.util.UserControllerAuthenticator;
@@ -41,9 +42,9 @@ public class OrderController {
 
     //update pending order by adding item
     @PatchMapping(value = "/additems/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addItemsToPendingOrder(@PathVariable long user_id, @RequestBody OrderItemsDTO orderItemsDTO) {
+    public ResponseEntity addItemsToPendingOrder(@PathVariable long user_id, @RequestBody UpdateItemDTO updateItemDTO) {
 
-        oderService.addItemsToPendingOrder(user_id, orderItemsDTO);
+        oderService.addItemsToPendingOrder(user_id,updateItemDTO);
         return new ResponseEntity("successfully Added Items", HttpStatus.OK);
     }
 
