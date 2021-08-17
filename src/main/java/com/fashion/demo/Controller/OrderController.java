@@ -1,5 +1,6 @@
 package com.fashion.demo.Controller;
 
+import com.fashion.demo.dto.Order.OderItemCountDTO;
 import com.fashion.demo.dto.Order.OrderDTO;
 import com.fashion.demo.dto.item.AddItemsReqDTO;
 import com.fashion.demo.dto.item.OrderItemsDTO;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -46,6 +49,14 @@ public class OrderController {
 
         oderService.addItemsToPendingOrder(user_id,updateItemDTO);
         return new ResponseEntity("successfully Added Items", HttpStatus.OK);
+    }
+
+    //view order by order id
+    @GetMapping(value = "/{order_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getOderDetails(@PathVariable long order_id) {
+
+        List<OderItemCountDTO> order = oderService.getOderDetail(order_id);
+        return new ResponseEntity(order , HttpStatus.OK);
     }
 
 }

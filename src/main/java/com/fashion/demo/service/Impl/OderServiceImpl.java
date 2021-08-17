@@ -10,7 +10,9 @@ import com.fashion.demo.Repository.ItemRepository;
 import com.fashion.demo.Repository.OrderItemCountRepository;
 import com.fashion.demo.Repository.OrderRepository;
 import com.fashion.demo.Repository.UserRepository;
+import com.fashion.demo.dto.Order.OderItemCountDTO;
 import com.fashion.demo.dto.Order.OrderDTO;
+import com.fashion.demo.dto.item.ItemDTO;
 import com.fashion.demo.dto.item.UpdateItemDTO;
 import com.fashion.demo.service.OderService;
 import org.apache.log4j.LogManager;
@@ -192,6 +194,53 @@ public class OderServiceImpl implements OderService {
             }
         }catch (Exception e) {
             LOGGER.error("get Customer orders : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<OderItemCountDTO> getOderDetail(long order_id) {
+        LOGGER.info("Execute method getOrderDetails ");
+        try {
+            //find user
+            Optional<OderEntity>  oderEntity = orderRepository.findById(order_id);
+            if(oderEntity.isPresent()) {
+                //find pending orders of user
+                List<OrderItemCountEntity> items = countRepository.findItemsByOrderId(order_id);
+                List<OderItemCountDTO> detailDTO = new ArrayList<>();
+
+                if(!items.isEmpty()){
+                    for(OrderItemCountEntity x : items){
+                        OderItemCountDTO countDTO = new OderItemCountDTO();
+                        countDTO.setItem_count(x.getItem_count());
+                        countDTO.setOrder_id(order_id);
+                        countDTO.setOrder_item_count_id(x.getOrder_item_count_id());
+
+                        ItemDTO itemDTO = new ItemDTO();
+                        itemDTO.setType(x.getItemEntity().getType());
+                        itemDTO.setPrice(x.getItemEntity().getPrice());
+                        itemDTO.setItem_name(x.getItemEntity().getItem_name());
+                        itemDTO.setId(x.getItemEntity().getItem_id());
+                        itemDTO.setImage(x.getItemEntity().getImage());
+                        itemDTO.setCategory(x.getItemEntity().getCategory());
+                        itemDTO.setSize(x.getItemEntity().getSize());
+                        itemDTO.setSerial_no(x.getItemEntity().getItem_serial_no());
+                        countDTO.setItem(itemDTO);
+
+                        detailDTO.add(countDTO);
+                    }
+
+                    return detailDTO;
+
+                } else{
+                    return detailDTO;
+                }
+            }
+            else{
+                throw new ServiceException(INPUT_NOT_FOUND,"Oder Not Found!");
+            }
+        }catch (Exception e) {
+            LOGGER.error("get Order Details : " + e.getMessage(), e);
             throw e;
         }
     }
