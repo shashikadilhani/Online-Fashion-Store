@@ -11,7 +11,6 @@ import com.fashion.demo.Repository.OrderItemCountRepository;
 import com.fashion.demo.Repository.OrderRepository;
 import com.fashion.demo.Repository.UserRepository;
 import com.fashion.demo.dto.Order.OrderDTO;
-import com.fashion.demo.dto.item.OrderItemsDTO;
 import com.fashion.demo.dto.item.UpdateItemDTO;
 import com.fashion.demo.service.OderService;
 import org.apache.log4j.LogManager;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -155,6 +155,43 @@ public class OderServiceImpl implements OderService {
             }
         }catch (Exception e) {
             LOGGER.error("create New Order : " + e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<OrderDTO> findUserOrders(long user_id) {
+        LOGGER.info("Execute method getCustomerOrders ");
+        try {
+            //find user
+            Optional<UserEntity> user = userRepository.findById(user_id);
+            if(user.isPresent()) {
+                //find pending orders of user
+                List<OderEntity> orders = orderRepository.findAllOrdersByUserId(user_id);
+                List<OrderDTO> orderDTOS = new ArrayList<>();
+
+                if(!orders.isEmpty()){
+                    for(OderEntity x : orders){
+                        OrderDTO orderDTO = new OrderDTO();
+                        orderDTO.setUser_id(user_id);
+                        orderDTO.setTotalPrice(x.getTotalPrice());
+                        orderDTO.setOrderStatus(x.getOrderStatus());
+                        orderDTO.setOrderedDate(x.getOrderedDate());
+                        orderDTO.setOrder_id(x.getOrder_id());
+                        orderDTOS.add(orderDTO);
+                    }
+
+                    return orderDTOS;
+
+                } else{
+                    return orderDTOS;
+                }
+            }
+            else{
+                throw new ServiceException(INPUT_NOT_FOUND,"User is Not Authorized!");
+            }
+        }catch (Exception e) {
+            LOGGER.error("get Customer orders : " + e.getMessage(), e);
             throw e;
         }
     }

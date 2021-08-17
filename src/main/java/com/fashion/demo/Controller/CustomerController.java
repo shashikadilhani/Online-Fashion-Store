@@ -1,11 +1,8 @@
 package com.fashion.demo.Controller;
 
-import com.fashion.demo.dto.item.AddItemsReqDTO;
-import com.fashion.demo.dto.response.CommonDataResponseDTO;
-import com.fashion.demo.dto.response.CommonResponseDTO;
-import com.fashion.demo.dto.user.UserDTO;
-import com.fashion.demo.dto.user.UserListDTO;
+import com.fashion.demo.dto.Order.OrderDTO;
 import com.fashion.demo.dto.user.UserViewDTO;
+import com.fashion.demo.service.OderService;
 import com.fashion.demo.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,9 +17,11 @@ import java.util.List;
 public class CustomerController {
 
     private final UserService userService;
+    private final OderService oderService;
 
-    public CustomerController(UserService userService) {
+    public CustomerController(UserService userService, OderService oderService) {
         this.userService = userService;
+        this.oderService = oderService;
     }
 
     @GetMapping(value = "/view/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -33,12 +32,10 @@ public class CustomerController {
     }
 
 
-    @PostMapping(value = "/addItems/{user_id}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity addItemsToOrder(@RequestBody AddItemsReqDTO addItemsReqDTO) {
+    @GetMapping(value = "/orders/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity viewOrders(@PathVariable long user_id) {
 
-//        EventCategoryEntity category = eventCategoryService.findCategoryByEventCategoryId(event_category_id);
-
-//        return new ResponseEntity(new CategoryListResponseDTO(true, category), HttpStatus.OK);
-        return null;
+        List<OrderDTO> orderDTOS = oderService.findUserOrders(user_id);
+        return new ResponseEntity(orderDTOS, HttpStatus.OK);
     }
 }
