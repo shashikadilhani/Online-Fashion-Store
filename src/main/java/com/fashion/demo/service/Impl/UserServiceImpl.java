@@ -133,4 +133,35 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return null;
         }
     }
+
+    @Override
+    public void updateProfile(long user_id, UserViewDTO userViewDTO) {
+        try {
+            LOGGER.info("Start Update User Profile Function: " + user_id);
+
+            Optional<UserEntity> user = userRepository.findById(user_id);
+            if(user.isPresent()){
+                UserEntity entity = user.get();
+                entity.setRole(userViewDTO.getRole());
+                entity.setStatus(userViewDTO.getStatus());
+                entity.setBirthday(userViewDTO.getBirthday());
+                entity.setEmail(userViewDTO.getEmail());
+                entity.setGender(userViewDTO.getGender());
+                entity.setName(userViewDTO.getName());
+
+                //image update
+//                entity.setPhotoPath(i);
+
+                //update role entity
+//                entity.setRoles();
+
+                userRepository.save(entity);
+            }else{
+                throw new ServiceException(RESOURCE_NOT_FOUND, "User not found");
+            }
+
+        } catch (Exception e) {
+            LOGGER.error("Function findUserForMobile  : " + e.getMessage());
+        }
+    }
 }

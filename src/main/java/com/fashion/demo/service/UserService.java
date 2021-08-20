@@ -15,4 +15,6 @@ public interface UserService {
     UserEntity findUserForValidation(String name);
 
     UserViewDTO viewUser(long user_id);
+
+    void updateProfile(long user_id, UserViewDTO userViewDTO);
 }

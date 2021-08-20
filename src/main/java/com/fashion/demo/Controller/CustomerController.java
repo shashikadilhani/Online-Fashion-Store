@@ -38,4 +38,12 @@ public class CustomerController {
         List<OrderDTO> orderDTOS = oderService.findUserOrders(user_id);
         return new ResponseEntity(orderDTOS, HttpStatus.OK);
     }
+
+    // update user profile
+    @PatchMapping(value = "/update/{user_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity updateProfile(@PathVariable long user_id, @RequestBody UserViewDTO userViewDTO) {
+
+        userService.updateProfile(user_id,userViewDTO);
+        return new ResponseEntity("profile Updated Successfully! Please Refresh", HttpStatus.OK);
+    }
 }
