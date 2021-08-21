@@ -1,6 +1,8 @@
 package com.fashion.demo.service.Impl;
 
+import com.fashion.demo.Entity.RoleEntity;
 import com.fashion.demo.Entity.UserEntity;
+import com.fashion.demo.Repository.RoleRepository;
 import com.fashion.demo.dto.user.UserDTO;
 import com.fashion.demo.dto.user.UserListDTO;
 import com.fashion.demo.dto.user.UserViewDTO;
@@ -8,8 +10,8 @@ import com.fashion.demo.service.UserService;
 import com.fashion.demo.Exception.ServiceException;
 import com.fashion.demo.Repository.UserRepository;
 import com.fashion.demo.Security.UserPrincipal;
+import com.fashion.demo.util.ImageSaveAndUpdate;
 import org.apache.log4j.LogManager;
-import org.apache.tomcat.util.buf.UEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,12 +21,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static com.fashion.demo.constant.ApplicationConstant.INPUT_NOT_FOUND;
-import static com.fashion.demo.constant.ApplicationConstant.RESOURCE_NOT_FOUND;
+import static com.fashion.demo.constant.ApplicationConstant.*;
 
 @Service(value = "userService")
 @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -32,10 +32,14 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private static final org.apache.log4j.Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
 
+    private final ImageSaveAndUpdate imageSaveAndUpdate;
+    private final RoleRepository roleRepository;
     @Autowired
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(ImageSaveAndUpdate imageSaveAndUpdate, RoleRepository roleRepository, UserRepository userRepository) {
+        this.imageSaveAndUpdate = imageSaveAndUpdate;
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
     }
 
@@ -150,10 +154,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 entity.setName(userViewDTO.getName());
 
                 //image update
-//                entity.setPhotoPath(i);
+                entity.setPhotoPath(imageSaveAndUpdate.saveOrUpdateImage(userViewDTO.getPhotoPath(),ITEM_ICON_IMG));
 
-                //update role entity
-//                entity.setRoles();
+//                //role entity
+//                Optional<RoleEntity> roleEntity = roleRepository.findbyuser();
 
                 userRepository.save(entity);
             }else{
