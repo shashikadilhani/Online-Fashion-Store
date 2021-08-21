@@ -59,4 +59,12 @@ public class OrderController {
         return new ResponseEntity(order , HttpStatus.OK);
     }
 
+    //confirm order
+    @PatchMapping(value = "/confirm/{order_id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity confirmOrder(@PathVariable long order_id) {
+
+//        oderService.confirmOrder(order_id);
+        return new ResponseEntity("Order added successfully!" , HttpStatus.OK);
+    }
+
 }
